@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe Booking do
   let(:plane) { Airplane.new(aircraft_type: :short_range,
-                                sits_count: 156,
-                                rows: 26,
-                                row_arrangement: ['ABC_DEF']) }
+                             sits_count: 156,
+                             rows: 26,
+                             row_arrangement: 'ABC_DEF') }
 
   describe '#book' do
     let(:booking) { described_class.new(plane) }
