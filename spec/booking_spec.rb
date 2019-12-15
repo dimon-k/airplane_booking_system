@@ -81,4 +81,21 @@ describe Booking do
       end
     end
   end
+
+  context '#show' do
+    context 'with 6 seats reservation in total' do
+      before do
+        book['Gerard', 2]
+        book['Marco', 3]
+        book['John', 1]
+      end
+
+      it 'returns all reserved seats with the person who made a reservation' do
+        expect(booking.show.count).to eq(3)
+        expect(booking.show[0]['Gerard']).to match_array(['A1', 'B1'])
+        expect(booking.show[1]['Marco']).to match_array(['D1', 'E1', 'F1'])
+        expect(booking.show[2]['John']).to match_array(['C1'])
+      end
+    end
+  end
 end
