@@ -1,7 +1,7 @@
 class Booking
   def initialize(plane)
     @plane = plane
-    @arrangement = ['A', 'B', 'C', '_', 'F', 'E', 'D'] # plane.arrangement
+    @arrangement = plane.arrangement
     @list_of_all_seats = set_list_of_all_seats
     # store somewhere "Marco: 4 people;" - name, and what seats exactly we researved??? TBD!!
   end
@@ -36,16 +36,18 @@ class Booking
   end
 
   def more_than_three_seats(amount)
-    in_row, full_rows, and_seats = if amount <= 3
-                                     [amount, 1, 0]
-                                   elsif amount % 3 == 1
-                                     [2, (amount / 2), (amount % 2)]
-                                   elsif amount % 2 == 1
-                                     [3, (amount / 3), (amount % 3)]
-                                   end
+    max_in_row, full_rows, and_seats = if amount <= 3
+                                         [amount, 1, 0]
+                                       elsif amount % 2 == 1
+                                         [3, (amount / 3), (amount % 3)]
+                                       elsif amount % 3 == 1
+                                         [2, (amount / 2), (amount % 2)]
+                                       else
+                                         [3, (amount / 3), (amount % 3)]
+                                       end
 
-    draft_seats_holder = arrangement.each_with_index.map { |_v, i| arrangement[i...i+in_row] }
-    seats_holder = draft_seats_holder.reject { |seats| seats.count < in_row || seats.any? { |seat| seat.eql?('_') } }
+    draft_seats_holder = arrangement.each_with_index.map { |_v, i| arrangement[i...i+max_in_row] }
+    seats_holder = draft_seats_holder.reject { |seats| seats.count < max_in_row || seats.any? { |seat| seat.eql?('_') } }
     matrix_seats_holder = []
     1.upto(plane.rows).each do |number|
       seats_holder.each do |seats|
