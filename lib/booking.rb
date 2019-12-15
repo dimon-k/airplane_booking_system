@@ -11,6 +11,8 @@ class Booking
   end
 
   def book(name, seats_amount)
+    raise 'Reservation amount should be in range of 1 to 8 people' unless seats_amount.between?(1, 8)
+
     more_than_three_seats(seats_amount) ||
       assign_rest_of_seats(seats_amount) ||
       random_assign(amount)
