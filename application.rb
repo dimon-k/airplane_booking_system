@@ -3,7 +3,6 @@ Dir['./lib/*.rb'].each { |file| require file }
 require 'sinatra'
 
 post '/bookings' do
-  # curl -d "name=Dim&amount=6" -X POST http://localhost:4567/bookings
   content_type :json
 
   booked = booking.book(params['name'], params['amount'].to_i)
