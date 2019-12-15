@@ -3,27 +3,24 @@ class Booking
     @plane = plane
     @arrangement = plane.arrangement
     @list_of_all_seats = set_list_of_all_seats
-    # store somewhere "Marco: 4 people;" - name, and what seats exactly we researved??? TBD!!
-  end
-
-  def all_seats
-    @list_of_all_seats
+    @reservations = []
   end
 
   def book(name, seats_amount)
     raise 'Reservation amount should be in range of 1 to 8 people' unless seats_amount.between?(1, 8)
 
-    more_than_three_seats(seats_amount) ||
-      assign_rest_of_seats(seats_amount) ||
-      random_assign(amount)
+    more_than_three_seats(seats_amount, name) ||
+      assign_rest_of_seats(seats_amount, name) ||
+      random_assign(amount, name)
   end
 
   def show
-    # to be implemented later
+    reservations
   end
 
   private
-  attr_reader :plane, :arrangement, :list_of_all_seats
+
+  attr_reader :plane, :arrangement, :list_of_all_seats, :reservations
 
   def set_list_of_all_seats
     all_seats_holder = {} 
@@ -37,7 +34,7 @@ class Booking
     all_seats_holder
   end
 
-  def more_than_three_seats(amount)
+  def more_than_three_seats(amount, name)
     max_in_row, full_rows, and_seats = if amount <= 3
                                          [amount, 1, 0]
                                        elsif amount % 2 == 1
@@ -68,13 +65,14 @@ class Booking
       if seats.all? { |seat| list_of_all_seats[seat] }
         seats.each { |seat| list_of_all_seats[seat] = false }
         @selected_seats = seats
+        reservations << { name => seats }
         break
       end
     end
     @selected_seats
   end
 
-  def assign_rest_of_seats(amount)
+  def assign_rest_of_seats(amount, name)
     aisle_seats = plane.row_arrangement.split('_').each_with_index.map do |seat, index|
                     index % 2 == 0 ? seat[-1] : seat[0]
                   end
@@ -86,19 +84,21 @@ class Booking
       if seats.all? { |seat| list_of_all_seats[seat] }
         seats.each { |seat| list_of_all_seats[seat] = false }
         @selected_seats = seats
+        reservations << { name => seats }
         break
       end
     end
     @selected_seats
   end
 
-  def random_assign(amount)
+  def random_assign(amount, name)
     available_seats = list_of_all_seats.select { |key, value| value }.keys
     matrix_seats_holder = [available_seats[0...amount]]
     matrix_seats_holder.each do |seats|
       if seats.all? { |seat| list_of_all_seats[seat] }
         seats.each { |seat| list_of_all_seats[seat] = false }
         @selected_seats = seats
+        reservations << { name => seats }
         break
       end
     end
