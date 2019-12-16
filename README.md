@@ -29,11 +29,11 @@ curl -d "name=John&amount=3" -X POST http://localhost:4567/bookings
 
 #### Design decision:
 - Since the app does not have a database, no intermediary objects are needed, two classes `Booking` and `Airplane` are enough
-- `Airplane` basically does not do a lot, we only need to it to know what will be the seats matrix
-- `Booking` performs all the logic in term of allocating passenges
+- `Airplane` basically does not do a lot, we only need it to know what will be the seats matrix
+- `Booking` performs all the logic in term of passenges allocation
 - Allocating passenges happens basically in three steps: 
     1. Comfortable - so they enjoy the trip and sit together
-    2. Aisle - so passenges still can sit not far awat from each other
+    2. Aisle - so passenges can still sit not far away from each other
     3. Random - filling the rest of the empty seats
 - `#book` method reserves a seat and returns the result
 - `#show` method shows all reservations _(decided to implement it this way, because instructions were not clear 100% about that method)_
