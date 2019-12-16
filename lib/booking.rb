@@ -8,6 +8,7 @@ class Booking
 
   def book(name, seats_amount)
     raise 'Reservation amount should be in range of 1 to 8 people' unless seats_amount.between?(1, 8)
+    raise 'An airplain is full, sorry!' unless seats_available?(seats_amount)
 
     comfortable_allocation(seats_amount, name) ||
       aisle_allocation(seats_amount, name) ||
@@ -21,6 +22,10 @@ class Booking
   private
 
   attr_reader :plane, :arrangement, :list_of_all_seats, :all_reservations
+
+  def seats_available?(seats_needed)
+    all_available_seats.count >= seats_needed
+  end
 
   def set_list_of_all_seats
     all_seats_holder = {} 
@@ -76,9 +81,12 @@ class Booking
   end
 
   def random_allocation(amount, name)
-    available_seats = list_of_all_seats.select { |key, value| value }.keys
-    matrix_seats_holder = [available_seats[0...amount]]
+    matrix_seats_holder = [all_available_seats[0...amount]]
     assign_seats(matrix_seats_holder, name)
+  end
+
+  def all_available_seats
+    list_of_all_seats.select { |key, value| value }.keys
   end
 
   def assign_seats(matrix_seats, name)
