@@ -80,6 +80,16 @@ describe Booking do
         expect{book['Filip', 9]}.to raise_error(RuntimeError, error_message)
       end
     end
+
+    context 'when airplain is full' do
+      let(:error_message) { 'An airplain is full, sorry!' }
+
+      before { 52.times { book[FFaker::Name.first_name, 3] } }
+
+      it 'raises an error' do
+        expect{book['Adam', 1]}.to raise_error(RuntimeError, error_message)
+      end
+    end
   end
 
   context '#show' do

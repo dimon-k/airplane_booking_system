@@ -2,6 +2,7 @@ Dir['./lib/*.rb'].each { |file| require file }
 
 require 'rack/test'
 require 'rspec'
+require 'ffaker'
 
 ENV['RACK_ENV'] = 'test'
 
