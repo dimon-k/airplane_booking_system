@@ -7,6 +7,7 @@ Project written almost in pure Ruby code. Only three gems were used for:
 - `sinatra` for API
 - `rspec` for testing the app
 - `rack-test` for testing API
+- `ffaker` for creating fake names in tests
 
 
 To run tests, run:
